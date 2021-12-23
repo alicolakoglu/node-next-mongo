@@ -1,0 +1,34 @@
+version: '1.0'
+services:
+  mongo-server-project:
+    container_name: mongo-server-project
+    image: mongo
+    ports:
+      - 27017:27017
+    volumes:
+      - project-app:/data/db
+    networks:
+      - project-custom-network
+  node-api:
+    container_name: node-api-project
+    build: 
+      context: ./api
+      dockerfile: Dockerfile
+    ports: 
+      - 3010:3010
+    networks:
+      - project-custom-network
+  next-ui:
+    container_name: next-ui-project
+    build: 
+      context: ./webui
+      dockerfile: Dockerfile
+    ports: 
+      - 3011:3011
+    networks:
+      - project-custom-network
+volumes:
+  project-app:
+networks:
+  project-custom-network:
+    driver: bridge
